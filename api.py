@@ -10,8 +10,9 @@ from flask import Flask, jsonify, request, session
 app = Flask(__name__)
 
 
-def get_github_user(username, auth={}):
+def get_github_user(username, auth=None):
     url = "https://api.github.com/users/%s" % username
+    auth = auth if auth else {}
     try:
         resp = requests.get(url, auth=auth)
         resp.raise_for_status()
@@ -27,8 +28,9 @@ def get_github_user(username, auth={}):
     return user
 
 
-def get_github_followers(username, auth={}):
+def get_github_followers(username, auth=None):
     url = "https://api.github.com/users/%s/followers" % username
+    auth = auth if auth else {}
 
     if 'page' in request.args:
         url += "?page=%s" % request.args.get('page')
